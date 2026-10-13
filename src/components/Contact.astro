@@ -1,0 +1,56 @@
+---
+import { profile } from '../data/profile';
+---
+
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact-inner">
+    <h2 id="contact-title" class="contact-title">お仕事のご相談はこちらから</h2>
+    <p class="contact-lead">
+      LPの新規制作、今あるサイトの改修、開発のお手伝いなど、内容が固まっていなくても大丈夫です。2営業日以内にお返事します。
+    </p>
+    <div class="contact-actions">
+      <a class="btn contact-btn" href={`mailto:${profile.email}`}>メールで相談する</a>
+      <a class="contact-sub" href={profile.github} target="_blank" rel="noopener noreferrer">GitHubを見る</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-block: clamp(80px, 12vw, 136px);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .contact-title {
+    font-size: clamp(1.875rem, 4.4vw, 3.25rem);
+    font-weight: 900;
+    line-height: 1.3;
+    font-feature-settings: 'palt' 1;
+  }
+  .contact-lead {
+    margin-top: 20px;
+    max-width: 34em;
+    opacity: 0.85;
+  }
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 32px;
+    margin-top: 40px;
+  }
+  .contact-btn {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--ink);
+    min-height: 60px;
+    padding-inline: 36px;
+    font-size: 1.0625rem;
+  }
+  .contact-btn:hover {
+    background: #f3c440;
+  }
+  .contact-sub {
+    text-underline-offset: 6px;
+  }
+</style>

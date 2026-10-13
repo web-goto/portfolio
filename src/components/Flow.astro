@@ -1,0 +1,143 @@
+---
+import { flow, prices } from '../data/profile';
+---
+
+<section class="section flow" id="flow" aria-labelledby="flow-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="flow-title" class="section-title">ご依頼の流れと料金</h2>
+      <p class="section-lead">はじめての方でも安心して進められるよう、各段階で確認しながら進めます。</p>
+    </div>
+
+    <ol class="steps">
+      {
+        flow.map((f, i) => (
+          <li class="step">
+            <span class="step-num" aria-hidden="true">{i + 1}</span>
+            <h3 class="step-title">{f.title}</h3>
+            <p>{f.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="prices">
+      <h3 class="prices-title">料金の目安</h3>
+      <dl class="price-list">
+        {
+          prices.map((p) => (
+            <div class="price">
+              <dt>{p.title}</dt>
+              <dd class="price-value">{p.price}</dd>
+              <dd class="price-note">{p.note}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="price-point">
+        デザインはAIを活用して効率よく作成するため、一般的なデザイン込みの制作よりも費用を抑えてご提供できます。
+      </p>
+      <p class="price-foot">価格はすべて税別です。内容やボリュームによって変わるので、まずはお気軽にご相談ください。</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 24px;
+    counter-reset: step;
+  }
+  .step {
+    padding-top: 20px;
+    border-top: 2px solid var(--ink);
+  }
+  .step-num {
+    display: block;
+    font-family: var(--font-latin);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .step-title {
+    margin: 14px 0 8px;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .step p {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .prices {
+    margin-top: clamp(56px, 8vw, 88px);
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: 14px;
+    background: var(--surface);
+  }
+  .prices-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .price-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 20px;
+  }
+  .price {
+    padding: 8px clamp(16px, 3vw, 32px);
+    border-left: 1px solid var(--rule);
+  }
+  .price:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .price dt {
+    font-weight: 700;
+  }
+  .price-value {
+    margin: 4px 0;
+    font-family: var(--font-latin);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .price-point {
+    margin-top: 24px;
+    padding: 14px 18px;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+    background: #fdf8e8;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .price-note,
+  .price-foot {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .price-foot {
+    margin-top: 20px;
+  }
+  @media (max-width: 960px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 24px;
+    }
+  }
+  @media (max-width: 640px) {
+    .steps,
+    .price-list {
+      grid-template-columns: 1fr;
+    }
+    .price,
+    .price:first-child {
+      padding: 16px 0;
+      border-left: 0;
+      border-bottom: 1px solid var(--rule);
+    }
+  }
+</style>

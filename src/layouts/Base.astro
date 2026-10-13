@@ -1,0 +1,56 @@
+---
+import { asset } from '../utils/asset';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f3f5f4" />
+    <link rel="icon" href={asset('/favicon.svg')} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">本文へスキップ</a>
+    <slot />
+    <script>
+      import { setupDialogs } from '../scripts/dialogs';
+      setupDialogs();
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: 16px;
+    top: -60px;
+    z-index: 100;
+    padding: 8px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: var(--radius-s);
+  }
+  .skip:focus {
+    top: calc(12px + env(safe-area-inset-top, 0px));
+  }
+</style>

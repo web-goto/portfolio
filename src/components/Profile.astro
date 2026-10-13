@@ -1,0 +1,179 @@
+---
+import { asset } from '../utils/asset';
+import { profile, timeline, skillGroups } from '../data/profile';
+---
+
+<section class="section profile" id="profile" aria-labelledby="profile-title">
+  <div class="wrap profile-grid">
+    <div class="profile-intro">
+      <h2 id="profile-title" class="section-title">プロフィール</h2>
+      <div class="person">
+        <img class="photo" src={asset(profile.photo)} alt={`${profile.name}の写真`} width="640" height="640" loading="lazy" />
+        <div>
+          <p class="person-name">{profile.name}</p>
+          <p class="person-role">{profile.role}</p>
+        </div>
+      </div>
+      <p class="intro-text">{profile.intro}</p>
+    </div>
+
+    <div class="profile-side">
+      <h3 class="sub-title">これまで</h3>
+      <ol class="timeline">
+        {
+          timeline.map((t) => (
+            <li>
+              <span class="year">{t.year}</span>
+              <span>{t.text}</span>
+            </li>
+          ))
+        }
+      </ol>
+
+      <h3 class="sub-title">スキル</h3>
+      <dl class="skills">
+        {
+          skillGroups.map((g) => (
+            <div>
+              <dt>{g.label}{g.learning && <span class="learning">勉強中</span>}</dt>
+              <dd>
+                <ul>
+                  {g.items.map((item) => <li class="tag">{item}</li>)}
+                </ul>
+                {g.note && <p class="skill-note">{g.note}</p>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .profile {
+    background: var(--surface);
+  }
+  .profile-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(48px, 7vw, 104px);
+  }
+  .person {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .photo {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .person-name {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+  }
+  .person-role {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .intro-text {
+    margin-top: 28px;
+    max-width: 30em;
+  }
+  .sub-title {
+    margin-bottom: 20px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sub-title:not(:first-child) {
+    margin-top: 56px;
+  }
+  .timeline {
+    border-left: 2px solid var(--ink);
+  }
+  .timeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 5.5em 1fr;
+    gap: 16px;
+    padding: 0 0 20px 24px;
+  }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 0.55em;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--ink);
+  }
+  .timeline li:last-child::before {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .year {
+    font-family: var(--font-latin);
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .skills {
+    display: grid;
+    gap: 16px;
+  }
+  .skills div {
+    display: grid;
+    grid-template-columns: 7em 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .skills dt {
+    font-size: 0.875rem;
+    color: var(--muted);
+    padding-top: 2px;
+  }
+  .skills ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .learning {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 0 8px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: #fdf8e8;
+    color: #7a5c00;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1.8;
+    vertical-align: 1px;
+    white-space: nowrap;
+  }
+  .skill-note {
+    margin-top: 8px;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  @media (max-width: 860px) {
+    .profile-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 480px) {
+    .skills div,
+    .timeline li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>

@@ -1,0 +1,93 @@
+---
+import { profile } from '../data/profile';
+import { shownAiSamples } from '../data/aiSamples';
+
+const links = [
+  { href: '#works', label: '実績' },
+  { href: '#services', label: 'できること' },
+  ...(shownAiSamples.length > 0 ? [{ href: '#ai-design', label: 'AIデザイン' }] : []),
+  { href: '#profile', label: 'プロフィール' },
+];
+---
+
+<header class="header">
+  <div class="wrap header-inner">
+    <a class="logo" href="#top" aria-label="トップへ戻る">
+      <span class="logo-name">{profile.name}</span>
+      <span class="logo-role">{profile.role}</span>
+    </a>
+    <nav aria-label="メインメニュー">
+      <ul class="nav">
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        {/* 【お問い合わせ】今は非表示。表示するときは、下の「実績を見る」の行を消して、この行のコメントを外してね */}
+        {/* <li><a class="nav-cta" href="#contact">相談する</a></li> */}
+        <li><a class="nav-cta" href="#works">実績を見る</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding-top: env(safe-area-inset-top, 0px);
+    margin-top: calc(-1 * env(safe-area-inset-top, 0px));
+    background: rgb(243 245 244 / 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 72px;
+  }
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .logo-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+  }
+  .logo-role {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 2.5vw, 32px);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+  .nav a {
+    text-decoration: none;
+  }
+  .nav a:not(.nav-cta):hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+  .nav-cta {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+  }
+  @media (max-width: 720px) {
+    .logo-role,
+    .nav li:not(:last-child) {
+      display: none;
+    }
+  }
+</style>

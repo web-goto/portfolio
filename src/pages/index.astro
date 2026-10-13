@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Works from '../components/Works.astro';
+import Services from '../components/Services.astro';
+import AiDesign from '../components/AiDesign.astro';
+import Profile from '../components/Profile.astro';
+import Flow from '../components/Flow.astro';
+import Footer from '../components/Footer.astro';
+// 【お問い合わせ】今は非表示。表示するときは、下の行の // を消してね
+// import Contact from '../components/Contact.astro';
+---
+
+<Base
+  title="キノコ | LP制作・Webサイト改修・TypeScript開発"
+  description="LP制作、Webサイトの改修、フロントエンド開発を行うキノコのポートフォリオです。ECの商品特集LPから採用サイトまで、目的から逆算して形にします。"
+>
+  <Header />
+  <main id="main">
+    <Hero />
+    <Works />
+    <Services />
+    <AiDesign />
+    <Flow />
+    <Profile />
+  </main>
+  {/* 【お問い合わせ】今は非表示。表示するときは、下の行を <Contact /> だけにしてね（上の import の // も消す） */}
+  {/* <Contact /> */}
+  <Footer />
+</Base>

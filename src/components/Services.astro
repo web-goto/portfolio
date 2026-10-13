@@ -1,0 +1,81 @@
+---
+import { services } from '../data/profile';
+---
+
+<section class="section services" id="services" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="services-title" class="section-title">できること</h2>
+      <p class="section-lead">1ページのLPから、既存サイトの改修、チームでの開発まで。規模や状況に合わせて関わり方を選べます。</p>
+    </div>
+    <ul class="service-list">
+      {
+        services.map((s) => (
+          <li class="service">
+            <h3 class="service-title">{s.title}</h3>
+            <p>{s.body}</p>
+            <ul class="service-examples">
+              {s.examples.map((e) => <li>{e}</li>)}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: var(--surface);
+  }
+  .service-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 2px solid var(--ink);
+  }
+  .service {
+    padding: 32px clamp(20px, 3vw, 36px) 8px;
+    border-left: 1px solid var(--rule);
+  }
+  .service:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .service-title {
+    margin-bottom: 16px;
+    font-size: 1.375rem;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .service-examples {
+    margin-top: 20px;
+    display: grid;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .service-examples li {
+    padding-left: 18px;
+    position: relative;
+  }
+  .service-examples li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 8px;
+    height: 2px;
+    background: var(--accent);
+  }
+  @media (max-width: 860px) {
+    .service-list {
+      grid-template-columns: 1fr;
+    }
+    .service,
+    .service:first-child {
+      padding: 28px 0;
+      border-left: 0;
+      border-bottom: 1px solid var(--rule);
+    }
+  }
+</style>

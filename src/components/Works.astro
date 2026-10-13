@@ -1,0 +1,98 @@
+---
+import { works } from '../data/works';
+import { categoryLabels, type WorkCategory } from '../types';
+import WorkCard from './WorkCard.astro';
+import WorkDialog from './WorkDialog.astro';
+
+// featured: true の実績を先頭に並べる
+const sorted = [...works].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+
+const filters: { value: 'all' | WorkCategory; label: string }[] = [
+  { value: 'all', label: 'すべて' },
+  ...(Object.keys(categoryLabels) as WorkCategory[]).map((value) => ({
+    value,
+    label: categoryLabels[value],
+  })),
+];
+const countOf = (value: string) =>
+  value === 'all' ? works.length : works.filter((w) => w.category === value).length;
+---
+
+<section class="section works" id="works" aria-labelledby="works-title">
+  <div class="wrap">
+    <div class="section-head works-head">
+      <div>
+        <h2 id="works-title" class="section-title">実績</h2>
+        <p class="section-lead">気になる実績を選ぶと、担当範囲や使った技術を見られます。</p>
+      </div>
+      <div class="filters" role="group" aria-label="カテゴリで絞り込む">
+        {
+          filters.map((f, i) => (
+            <button class="filter" type="button" data-filter={f.value} aria-pressed={i === 0 ? 'true' : 'false'}>
+              {f.label}
+              <span class="filter-count">{countOf(f.value)}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <ul class="grid" id="works-grid">
+      {sorted.map((work) => <WorkCard work={work} />)}
+    </ul>
+    <p class="visually-hidden" aria-live="polite" id="works-status"></p>
+  </div>
+
+  {sorted.map((work) => <WorkDialog work={work} />)}
+</section>
+
+<script>
+  import { setupWorks } from '../scripts/works';
+  setupWorks();
+</script>
+
+<style>
+  .works-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1.5px solid var(--rule);
+    border-radius: 999px;
+    background: var(--surface);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .filter:hover {
+    border-color: var(--ink);
+  }
+  .filter[aria-pressed='true'] {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .filter-count {
+    font-family: var(--font-latin);
+    font-size: 0.8125rem;
+    opacity: 0.7;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: clamp(32px, 4vw, 48px) clamp(20px, 3vw, 32px);
+  }
+</style>

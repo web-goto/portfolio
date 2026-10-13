@@ -1,0 +1,131 @@
+---
+import { asset } from '../utils/asset';
+import { works } from '../data/works';
+
+// ヒーローに重ねて見せる実績（slug を変えれば差し替えできるよ）
+const picks = ['caremate-recruit', 'takaq-summer', 'loohcs']
+  .map((slug) => works.find((w) => w.slug === slug))
+  .filter((w) => w?.image);
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1 id="hero-title" class="hero-title">
+        <span>見た人が、</span><span>一歩動きたくなる</span><span>Webをつくる。</span>
+      </h1>
+      <p class="hero-lead">
+        LP制作、Webサイトの改修、フロントエンド開発。<br class="pc" />
+        商品の特集ページから採用サイトまで、目的から逆算して形にします。
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#works">実績を見る</a>
+        {/* 【お問い合わせ】今は非表示。表示するときは、この行のコメントを外してね */}
+        {/* <a class="btn btn-ghost" href="#contact">仕事を相談する</a> */}
+      </div>
+    </div>
+
+    <div class="hero-stack" aria-hidden="true">
+      {
+        picks.map((w, i) => (
+          <figure class={`shot shot-${i + 1}`}>
+            <img src={asset(w!.image)} alt="" width="1200" height="762" loading="eager" />
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(48px, 8vw, 104px) clamp(64px, 10vw, 128px);
+    overflow: hidden;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(32px, 5vw, 72px);
+  }
+  .hero-title {
+    font-size: clamp(2.1rem, 4.4vw, 3.9rem);
+    font-weight: 900;
+    line-height: 1.22;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    font-feature-settings: 'palt' 1;
+  }
+  .hero-title span {
+    display: block;
+    white-space: nowrap;
+  }
+  .hero-lead {
+    margin-top: 28px;
+    max-width: 34em;
+    font-size: 1.0625rem;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  /* 実績のスクリーンショットを台紙に重ねたような見せ方 */
+  .hero-stack {
+    position: relative;
+    aspect-ratio: 1 / 0.92;
+  }
+  .shot {
+    position: absolute;
+    width: 78%;
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    background: var(--surface);
+    border: 6px solid var(--surface);
+    box-shadow: 0 24px 48px -24px rgb(23 50 74 / 0.45);
+    animation: settle 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .shot img {
+    border-radius: 4px;
+  }
+  .shot-1 {
+    top: 0;
+    right: 0;
+    z-index: 1;
+  }
+  .shot-2 {
+    top: 30%;
+    left: 0;
+    z-index: 2;
+    animation-delay: 0.12s;
+  }
+  .shot-3 {
+    bottom: 0;
+    right: 6%;
+    width: 62%;
+    z-index: 3;
+    animation-delay: 0.24s;
+  }
+  @keyframes settle {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
+    .hero-stack {
+      max-width: 560px;
+      width: 100%;
+      margin-inline: auto;
+    }
+    .pc {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,184 @@
+---
+import { asset } from '../utils/asset';
+import type { Work } from '../types';
+import { categoryLabels } from '../types';
+
+interface Props {
+  work: Work;
+}
+const { work } = Astro.props;
+
+// 【記入】のまま残っている項目は、目立つ枠で表示して気づけるようにしている
+const isTodo = (text?: string) => !!text && text.startsWith('【記入】');
+
+const story = [
+  { label: '課題', text: work.challenge },
+  { label: '工夫したこと', text: work.approach },
+  { label: '結果', text: work.result },
+].filter((s) => s.text);
+---
+
+<dialog class="dialog" id={`work-${work.slug}`} aria-labelledby={`work-${work.slug}-title`}>
+  <div class="dialog-inner">
+    <button class="dialog-close" type="button" data-close aria-label="閉じる">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+    </button>
+
+    {
+      work.image ? (
+        <img class="dialog-image" src={asset(work.image)} alt={`${work.title}のスクリーンショット`} width="1200" height="762" loading="lazy" />
+      ) : (
+        <p class="dialog-note">守秘義務のため、社名や画面は掲載していません。</p>
+      )
+    }
+
+    <div class="dialog-body">
+      <p class="dialog-client">
+        <span class="tag">{categoryLabels[work.category]}</span>
+        {work.client}
+      </p>
+      <h3 id={`work-${work.slug}-title`} class="dialog-title">{work.title}</h3>
+      <p>{work.summary}</p>
+
+      <dl class="dialog-meta">
+        <div><dt>期間</dt><dd>{work.period}</dd></div>
+        <div><dt>担当</dt><dd>{work.role.join('、')}</dd></div>
+        <div><dt>使用技術</dt><dd>{work.tech.join('、')}</dd></div>
+      </dl>
+
+      {
+        story.length > 0 && (
+          <div class="dialog-story">
+            {story.map((s) => (
+              <section class:list={['story', { todo: isTodo(s.text) }]}>
+                <h4>{s.label}</h4>
+                <p>{s.text}</p>
+              </section>
+            ))}
+          </div>
+        )
+      }
+
+      {
+        work.url && (
+          <a class="btn btn-primary dialog-link" href={work.url} target="_blank" rel="noopener noreferrer">
+            公開中のページを見る
+          </a>
+        )
+      }
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .dialog {
+    width: min(760px, calc(100% - 32px));
+    max-height: calc(100% - 48px);
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 40px 80px -30px rgb(23 50 74 / 0.5);
+  }
+  .dialog::backdrop {
+    background: rgb(23 50 74 / 0.55);
+  }
+  .dialog[open] {
+    animation: pop 0.25s ease-out;
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  .dialog-inner {
+    position: relative;
+  }
+  .dialog-close {
+    position: sticky;
+    top: 12px;
+    float: right;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: 12px 12px -56px 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 2px 8px rgb(23 50 74 / 0.2);
+    cursor: pointer;
+  }
+  .dialog-image {
+    width: 100%;
+  }
+  .dialog-note {
+    padding: 28px clamp(20px, 4vw, 40px) 0;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .dialog-body {
+    display: grid;
+    gap: 16px;
+    padding: clamp(20px, 4vw, 40px);
+  }
+  .dialog-client {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .dialog-title {
+    font-size: clamp(1.375rem, 3vw, 1.75rem);
+    font-weight: 900;
+    line-height: 1.4;
+    color: var(--ink);
+    padding-right: 40px;
+  }
+  .dialog-meta {
+    display: grid;
+    gap: 8px;
+    padding: 16px 0;
+    border-block: 1px solid var(--rule);
+    font-size: 0.9375rem;
+  }
+  .dialog-meta div {
+    display: grid;
+    grid-template-columns: 6em 1fr;
+    gap: 12px;
+  }
+  .dialog-meta dt {
+    color: var(--muted);
+  }
+  .dialog-story {
+    display: grid;
+    gap: 20px;
+    margin-top: 4px;
+  }
+  .story h4 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .story.todo p {
+    padding: 10px 14px;
+    border: 1.5px dashed var(--accent);
+    border-radius: var(--radius-s);
+    background: #fdf8e8;
+    font-size: 0.875rem;
+    color: #7a5c00;
+  }
+  .dialog-link {
+    justify-self: start;
+    margin-top: 8px;
+  }
+</style>
