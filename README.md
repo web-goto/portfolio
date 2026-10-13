@@ -1,4 +1,4 @@
-# キノコのポートフォリオ（Astro + TypeScript）
+# ポートフォリオ（Astro + TypeScript）
 
 ## はじめに動かしてみよう
 
